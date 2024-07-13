@@ -155,9 +155,9 @@ Resources:
             . /home/ec2-user/.bashrc
 
             # Install NVM, NPM, Node.js
-            nvm alias default v14.17.0
-            nvm install v14.17.0
-            nvm use v14.17.0
+            nvm alias default v12.7.0
+            nvm install v12.7.0
+            nvm use v12.7.0
 
             # Create log directory
             mkdir -p /home/ec2-user/app/logs
