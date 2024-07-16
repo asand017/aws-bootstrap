@@ -29,7 +29,6 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: !Sub 'Internal Security group for ${AWS::StackName}'
-
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 8181
@@ -259,6 +258,14 @@ Resources:
 
             # Update all packages
             yum -y update
+
+            # Install CodeDeploy agent
+            yum install -y ruby wget
+            cd /home/ec2-user
+            wget https://aws-codedeploy-${AWS::Region}.s3.amazonaws.com/latest/install
+            chmod +x ./install
+            ./install auto
+            service codedeploy-agent start
 
             # Get latest cfn scripts; https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#cfninit
             yum install -y aws-cfn-bootstrap
