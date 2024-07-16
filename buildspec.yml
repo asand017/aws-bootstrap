@@ -1,27 +1,17 @@
 # CodeBuild specification to tell how to build our application
 version: 0.2
 
-run-as: ec2-user
-
 phases:
   install:
-    run-as: ec2-user
     runtime-versions:
       nodejs: 10
-    commands:
-      - echo "Current user: $(whoami)"
-      - echo "Home directory: $HOME"
-
   pre_build:
-    run-as: ec2-user
     commands:
       # run 'npm install' using versions in package-lock.json
-      - npm install
-
+      - "npm install"
   build:
-    run-as: ec2-user
     commands:
-      - npm run build
+      - "npm run build"
 artifacts:
   files:
     - start-service.sh
