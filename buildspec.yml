@@ -6,8 +6,8 @@ phases:
     runtime-versions:
       nodejs: 10
     commands:
-      - echo "Current user: $(whoami)"
-      - echo "Home directory: $HOME"
+      - echo "Current user:$(whoami)"
+      - echo "Home directory:$HOME"
   pre_build:
     commands:
       # run 'npm install' using versions in package-lock.json
