@@ -19,6 +19,6 @@ if (fs.existsSync(httpsKey) && fs.existsSync(httpsCert)) {
 	server.listen(httpsPort, hostname, () => {
 		console.log(`Server running at https://${hostname()}:${httpsPort}/`);
 	});
-}else{
+} else {
 	console.log('Could not find certificate/key');
 }
