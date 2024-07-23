@@ -22,16 +22,8 @@ Resources:
       GroupDescription: !Sub 'Internal Security group for ${AWS::StackName}'
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 8181
-          ToPort: 8181
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
           FromPort: 8443
           ToPort: 8443
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 443
@@ -257,29 +249,6 @@ Resources:
         - Key: Name
           Value: !Ref AWS::StackName
 
-  LoadBalancerListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref LoadBalancerTargetGroup
-      LoadBalancerArn: !Ref LoadBalancer
-      Port: 80
-      Protocol: HTTP
-
-  LoadBalancerTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      TargetType: instance
-      Port: 8181
-      Protocol: HTTP
-      VpcId: !Ref VPC
-      HealthCheckEnabled: true
-      HealthCheckProtocol: HTTP
-      Tags:
-        - Key: Name
-          Value: !Ref AWS::StackName
-
   HTTPSLoadBalancerTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -332,7 +301,6 @@ Resources:
         LaunchTemplateId: !Ref InstanceLaunchTemplate
         Version: !GetAtt InstanceLaunchTemplate.LatestVersionNumber
       TargetGroupArns:
-        - !Ref LoadBalancerTargetGroup
         - !Ref HTTPSLoadBalancerTargetGroup
       MetricsCollection:
         - Granularity: "1Minute"
@@ -358,9 +326,6 @@ Resources:
         DNSName: !GetAtt LoadBalancer.DNSName
 
 Outputs:
-  LBEndpoint:
-    Description: "The DNS name for the stage"
-    Value: !Sub "http://${DNS}"
   ScalingGroup:
     Description: "The ScalingGroup for this stage"
     Value: !Ref ScalingGroup
